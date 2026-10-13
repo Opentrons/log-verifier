@@ -1,6 +1,6 @@
 {
   "name": "@log-verifier/app-shell",
-  "version": "1.0.0-alpha.3",
+  "version": "0.9.0",
   "description": "Log verifier electron shell application",
   "license": "Apache-2.0",
   "author": {
