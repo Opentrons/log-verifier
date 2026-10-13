@@ -6,7 +6,13 @@
 
 import pytest
 
-from releases import magic_links, mark_latest_active, revoke_latest, update_releases
+from releases import (
+    magic_links,
+    mark_latest_active,
+    revoke_latest,
+    update_releases,
+    write_latest_summary,
+)
 
 BASE_URL = "https://builds.opentrons.com/logviewer"
 FILENAMES = [
@@ -101,6 +107,24 @@ def test_activate_highest_production_version():
         "1.10.0",
         "1.10.0",
     ]
+
+
+def test_write_latest_summary(tmp_path, monkeypatch):
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    write_latest_summary("1.9.0", "1.10.0")
+    assert summary.read_text(encoding="utf-8") == (
+        "## Latest release\n\n- Before: `1.9.0`\n- After: `1.10.0`\n"
+    )
+
+
+def test_write_latest_summary_none(tmp_path, monkeypatch):
+    summary = tmp_path / "summary.md"
+    monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
+    write_latest_summary(None, None)
+    assert summary.read_text(encoding="utf-8") == (
+        "## Latest release\n\n- Before: `none`\n- After: `none`\n"
+    )
 
 
 def test_revoke_moves_active_to_previous_version():
