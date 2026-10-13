@@ -28,13 +28,17 @@ data "aws_s3_bucket" "ot3_development_builds" {
 
 locals {
   # GitHub issues this repo's OIDC subject with immutable org/repo IDs
-  # ("repo:Opentrons@<org id>/log-viewer@<repo id>:..."), which is why the plain
+  # ("repo:Opentrons@<org id>/<repo name>@<repo id>:..."), which is why the plain
   # "repo:Opentrons/opentrons:*" form used by the monorepo role does not match here.
   # See: gh api /repos/Opentrons/log-viewer/actions/oidc/customization/sub
-  # Both forms are allowed so the role keeps working if the claim format changes.
+  # Name and ID forms are both allowed. log-viewer and log-verifier are both
+  # listed so deploys keep working when the repository is renamed. The repo id
+  # stays 1332098088.
   github_sub_patterns = [
     "repo:Opentrons/log-viewer:*",
+    "repo:Opentrons/log-verifier:*",
     "repo:Opentrons@6139147/log-viewer@1332098088:*",
+    "repo:Opentrons@6139147/log-verifier@1332098088:*",
   ]
 
   object_arns = [
