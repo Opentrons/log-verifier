@@ -18,7 +18,11 @@ from botocore.exceptions import ClientError
 from yarl import URL
 
 INSTALLERS = {"win": ".msi", "mac": ".dmg", "linux": ".AppImage"}
-STABLE_NAMES = {"win": "Log Viewer.msi", "mac": "Log Viewer.dmg", "linux": "Log Viewer.AppImage"}
+STABLE_NAMES = {
+    "win": "Log Verifier.msi",
+    "mac": "Log Verifier.dmg",
+    "linux": "Log Verifier.AppImage",
+}
 PUBLIC = {"ACL": "public-read", "CacheControl": "max-age=60"}
 
 
@@ -112,7 +116,11 @@ def revoke_latest(document):
 
 def active_release(document):
     releases = _releases_of(document)
-    versions = [version for version, release in releases.items() if release.get("active") is True]
+    versions = [
+        version
+        for version, release in releases.items()
+        if release.get("active") is True
+    ]
     if len(versions) > 1:
         raise ValueError(f"Multiple active releases: {', '.join(versions)}")
     if not versions:
@@ -139,7 +147,9 @@ def magic_links(document):
 
 def fetch_releases(bucket, prefix, s3):
     try:
-        payload = s3.get_object(Bucket=bucket, Key=f"{prefix.strip('/')}/releases.json")["Body"].read()
+        payload = s3.get_object(
+            Bucket=bucket, Key=f"{prefix.strip('/')}/releases.json"
+        )["Body"].read()
     except ClientError as error:
         if error.response["Error"]["Code"] not in {"NoSuchKey", "404"}:
             raise
@@ -205,7 +215,9 @@ def main(argv=None):
             f"https://{args.bucket}/{args.prefix.strip('/')}",
         )
     else:
-        document = {"activate": mark_latest_active, "revoke": revoke_latest}[args.command](document)
+        document = {"activate": mark_latest_active, "revoke": revoke_latest}[
+            args.command
+        ](document)
         active = active_release(document)
         print("No active release" if active is None else f"Active release {active[0]}")
     publish(document, args.bucket, args.prefix, args.distribution_id or None, s3=s3)
