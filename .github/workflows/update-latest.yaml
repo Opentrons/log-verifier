@@ -17,3 +17,7 @@ jobs:
         uses: "./.github/actions/release-manifest"
         with:
           command: activate
+          deploy-role: ${{ vars.OT_LOGVIEWER_DEPLOY_ROLE }}
+          deploy-bucket: ${{ vars.DEPLOY_BUCKET }}
+          deploy-prefix: ${{ vars.DEPLOY_PREFIX_BASE }}
+          distribution-id: ${{ vars.OT_LOGVIEWER_BUILDS_CLOUDFRONT_DISTRIBUTION_ID }}

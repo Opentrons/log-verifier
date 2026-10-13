@@ -9,6 +9,7 @@
 import argparse
 import copy
 import json
+import os
 import uuid
 from pathlib import Path
 
@@ -195,6 +196,21 @@ def _filenames(artifact_dir):
     return [path.name for path in Path(artifact_dir).iterdir() if path.is_file()]
 
 
+def _active_version(document):
+    active = active_release(document)
+    return None if active is None else active[0]
+
+
+def write_latest_summary(before, after):
+    path = os.environ.get("GITHUB_STEP_SUMMARY")
+    if not path:
+        return
+    with open(path, "a", encoding="utf-8") as summary:
+        summary.write("## Latest release\n\n")
+        summary.write(f"- Before: `{before or 'none'}`\n")
+        summary.write(f"- After: `{after or 'none'}`\n")
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=["update", "activate", "revoke"])
@@ -215,11 +231,13 @@ def main(argv=None):
             f"https://{args.bucket}/{args.prefix.strip('/')}",
         )
     else:
+        before = _active_version(document)
         document = {"activate": mark_latest_active, "revoke": revoke_latest}[
             args.command
         ](document)
-        active = active_release(document)
-        print("No active release" if active is None else f"Active release {active[0]}")
+        after = _active_version(document)
+        print("No active release" if after is None else f"Active release {after}")
+        write_latest_summary(before, after)
     publish(document, args.bucket, args.prefix, args.distribution_id or None, s3=s3)
 
 
