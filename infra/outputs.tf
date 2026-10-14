@@ -1,6 +1,6 @@
 output "log_viewer_github_oidc_role_arn" {
   description = <<-EOT
-    IAM role ARN for GitHub Actions OIDC from repo Opentrons/log-viewer to deploy
+    IAM role ARN for GitHub Actions OIDC from repo Opentrons/log-verifier to deploy
     artifacts to s3://builds.opentrons.com/logviewer/ and
     s3://ot3-development.builds.opentrons.com/logviewer/.
     Set GitHub variable OT_LOGVIEWER_DEPLOY_ROLE to this value.

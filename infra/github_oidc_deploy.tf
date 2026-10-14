@@ -1,4 +1,4 @@
-# GitHub Actions OIDC role for Opentrons/log-viewer desktop app deploys.
+# GitHub Actions OIDC role for Opentrons/log-verifier desktop app deploys.
 #
 # Mirrors inf/release-ci/opentrons_monorepo_app_deploy_oidc.tf in robot-stack-infra,
 # scoped to prefix "logviewer/" instead of "app/".
@@ -30,14 +30,10 @@ locals {
   # GitHub issues this repo's OIDC subject with immutable org/repo IDs
   # ("repo:Opentrons@<org id>/<repo name>@<repo id>:..."), which is why the plain
   # "repo:Opentrons/opentrons:*" form used by the monorepo role does not match here.
-  # See: gh api /repos/Opentrons/log-viewer/actions/oidc/customization/sub
-  # Name and ID forms are both allowed. log-viewer and log-verifier are both
-  # listed so deploys keep working when the repository is renamed. The repo id
-  # stays 1332098088.
+  # See: gh api /repos/Opentrons/log-verifier/actions/oidc/customization/sub
+  # Name and ID forms are both allowed. The repo id stays 1332098088.
   github_sub_patterns = [
-    "repo:Opentrons/log-viewer:*",
     "repo:Opentrons/log-verifier:*",
-    "repo:Opentrons@6139147/log-viewer@1332098088:*",
     "repo:Opentrons@6139147/log-verifier@1332098088:*",
   ]
 
@@ -50,7 +46,7 @@ locals {
 
 resource "aws_iam_role" "github_actions_log_viewer_deploy" {
   name        = "github-actions-log-viewer-deploy"
-  description = "OIDC: Opentrons/log-viewer S3 deploy to robot-stack + ot3 builds buckets (logviewer/ prefix)"
+  description = "OIDC: Opentrons/log-verifier S3 deploy to robot-stack + ot3 builds buckets (logviewer/ prefix)"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
