@@ -14,7 +14,7 @@ from releases import (
     write_latest_summary,
 )
 
-BASE_URL = "https://builds.opentrons.com/logviewer"
+BASE_URL = "https://builds.opentrons.com/logverifier"
 FILENAMES = [
     "Log Verifier-v1.2.3-win-abc.msi",
     "Log Verifier-v1.2.3-mac-abc.dmg",
@@ -30,9 +30,9 @@ def test_update_omits_active_and_revoked():
     assert document == {
         "productionV1": {
             "1.2.3": {
-                "win": "https://builds.opentrons.com/logviewer/Log%20Verifier-v1.2.3-win-abc.msi",
-                "mac": "https://builds.opentrons.com/logviewer/Log%20Verifier-v1.2.3-mac-abc.dmg",
-                "linux": "https://builds.opentrons.com/logviewer/Log%20Verifier-v1.2.3-linux-abc.AppImage",
+                "win": "https://builds.opentrons.com/logverifier/Log%20Verifier-v1.2.3-win-abc.msi",
+                "mac": "https://builds.opentrons.com/logverifier/Log%20Verifier-v1.2.3-mac-abc.dmg",
+                "linux": "https://builds.opentrons.com/logverifier/Log%20Verifier-v1.2.3-linux-abc.AppImage",
             }
         }
     }
@@ -42,11 +42,11 @@ def test_update_preserves_existing_flags():
     existing = {
         "productionV1": {
             "1.0.0": {
-                "win": "https://builds.opentrons.com/logviewer/old.msi",
+                "win": "https://builds.opentrons.com/logverifier/old.msi",
                 "active": True,
             },
             "1.2.3": {
-                "win": "https://builds.opentrons.com/logviewer/stale.msi",
+                "win": "https://builds.opentrons.com/logverifier/stale.msi",
                 "revoked": True,
             },
         }
@@ -77,23 +77,23 @@ def test_activate_highest_production_version():
     document = {
         "productionV1": {
             "1.9.0": {
-                "win": "https://builds.opentrons.com/logviewer/old.msi",
-                "mac": "https://builds.opentrons.com/logviewer/old.dmg",
-                "linux": "https://builds.opentrons.com/logviewer/old.AppImage",
+                "win": "https://builds.opentrons.com/logverifier/old.msi",
+                "mac": "https://builds.opentrons.com/logverifier/old.dmg",
+                "linux": "https://builds.opentrons.com/logverifier/old.AppImage",
                 "active": True,
             },
             "1.10.0": {
-                "win": "https://builds.opentrons.com/logviewer/Log%20Verifier-v1.10.0-win.msi",
-                "mac": "https://builds.opentrons.com/logviewer/Log%20Verifier-v1.10.0-mac.dmg",
-                "linux": "https://builds.opentrons.com/logviewer/Log%20Verifier-v1.10.0-linux.AppImage",
+                "win": "https://builds.opentrons.com/logverifier/Log%20Verifier-v1.10.0-win.msi",
+                "mac": "https://builds.opentrons.com/logverifier/Log%20Verifier-v1.10.0-mac.dmg",
+                "linux": "https://builds.opentrons.com/logverifier/Log%20Verifier-v1.10.0-linux.AppImage",
             },
             "2.0.0": {
-                "win": "https://builds.opentrons.com/logviewer/revoked.msi",
+                "win": "https://builds.opentrons.com/logverifier/revoked.msi",
                 "revoked": True,
                 "active": True,
             },
             "2.1.0-alpha.1": {
-                "win": "https://builds.opentrons.com/logviewer/alpha.msi"
+                "win": "https://builds.opentrons.com/logverifier/alpha.msi"
             },
         }
     }
@@ -131,14 +131,14 @@ def test_revoke_moves_active_to_previous_version():
     document = {
         "productionV1": {
             "1.9.0": {
-                "win": "https://builds.opentrons.com/logviewer/old.msi",
-                "mac": "https://builds.opentrons.com/logviewer/old.dmg",
-                "linux": "https://builds.opentrons.com/logviewer/old.AppImage",
+                "win": "https://builds.opentrons.com/logverifier/old.msi",
+                "mac": "https://builds.opentrons.com/logverifier/old.dmg",
+                "linux": "https://builds.opentrons.com/logverifier/old.AppImage",
             },
             "1.10.0": {
-                "win": "https://builds.opentrons.com/logviewer/Log%20Verifier-v1.10.0-win.msi",
-                "mac": "https://builds.opentrons.com/logviewer/Log%20Verifier-v1.10.0-mac.dmg",
-                "linux": "https://builds.opentrons.com/logviewer/Log%20Verifier-v1.10.0-linux.AppImage",
+                "win": "https://builds.opentrons.com/logverifier/Log%20Verifier-v1.10.0-win.msi",
+                "mac": "https://builds.opentrons.com/logverifier/Log%20Verifier-v1.10.0-mac.dmg",
+                "linux": "https://builds.opentrons.com/logverifier/Log%20Verifier-v1.10.0-linux.AppImage",
                 "active": True,
             },
         }
@@ -150,7 +150,7 @@ def test_revoke_moves_active_to_previous_version():
     assert [
         (link["filename"], link["source_key"]) for link in magic_links(revoked)
     ] == [
-        ("logverifier.msi", "logviewer/old.msi"),
-        ("logverifier.dmg", "logviewer/old.dmg"),
-        ("logverifier.AppImage", "logviewer/old.AppImage"),
+        ("logverifier.msi", "logverifier/old.msi"),
+        ("logverifier.dmg", "logverifier/old.dmg"),
+        ("logverifier.AppImage", "logverifier/old.AppImage"),
     ]
