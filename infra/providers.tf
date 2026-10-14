@@ -5,7 +5,7 @@ provider "aws" {
   default_tags {
     tags = {
       ou      = "robotics"
-      service = "log-viewer"
+      service = "log-verifier"
     }
   }
 }

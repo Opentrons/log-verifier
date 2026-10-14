@@ -9,7 +9,7 @@ terraform {
   backend "s3" {
     bucket       = "core-infra-tf-state"
     encrypt      = true
-    key          = "robotics/log-viewer"
+    key          = "robotics/log-verifier"
     use_lockfile = true
     profile      = "terraform-state"
     region       = "us-east-2"
