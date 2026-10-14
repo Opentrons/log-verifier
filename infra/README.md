@@ -1,7 +1,7 @@
-# Log Viewer release hosting
+# Log Verifier release hosting
 
-GitHub Actions uploads signed Log Viewer installers to the existing builds website
-buckets, under `logviewer/` — the same pattern as the desktop app's `app/` prefix.
+GitHub Actions for Opentrons/log-verifier uploads signed installers to the existing
+builds website buckets, under `logviewer/` — the same pattern as the desktop app's `app/` prefix.
 
 | Channel  | URL                                                    |
 | -------- | ------------------------------------------------------ |
