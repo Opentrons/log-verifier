@@ -3,7 +3,7 @@ output "log_verifier_github_oidc_role_arn" {
     IAM role ARN for GitHub Actions OIDC from repo Opentrons/log-verifier to deploy
     artifacts to s3://builds.opentrons.com/logverifier/ and
     s3://ot3-development.builds.opentrons.com/logverifier/.
-    Set GitHub variable OT_LOGVIEWER_DEPLOY_ROLE to this value.
+    Set GitHub variable OT_LOGVERIFIER_DEPLOY_ROLE to this value.
   EOT
   value       = aws_iam_role.github_actions_log_verifier_deploy.arn
 }

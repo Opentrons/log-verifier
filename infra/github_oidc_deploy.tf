@@ -6,7 +6,7 @@
 # Buckets: robot-stack prod website (builds.opentrons.com) + ot3 prod website
 # (ot3-development.builds.opentrons.com).
 #
-# After apply, set GitHub Actions variable OT_LOGVIEWER_DEPLOY_ROLE to
+# After apply, set GitHub Actions variable OT_LOGVERIFIER_DEPLOY_ROLE to
 # terraform output -raw log_verifier_github_oidc_role_arn.
 #
 # Prerequisite: IAM OIDC provider for https://token.actions.githubusercontent.com
@@ -49,8 +49,12 @@ locals {
 }
 
 resource "aws_iam_role" "github_actions_log_verifier_deploy" {
-  name        = "github-actions-log-viewer-deploy"
+  name        = "github-actions-log-verifier-deploy"
   description = "OIDC: Opentrons/log-verifier S3 deploy to robot-stack + ot3 builds buckets (logverifier/ prefix)"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -75,7 +79,7 @@ resource "aws_iam_role" "github_actions_log_verifier_deploy" {
 }
 
 resource "aws_iam_role_policy" "github_actions_log_verifier_deploy_s3" {
-  name = "log-viewer-s3-logviewer-prefix"
+  name = "log-verifier-s3-logverifier-prefix"
   role = aws_iam_role.github_actions_log_verifier_deploy.id
 
   policy = jsonencode({
