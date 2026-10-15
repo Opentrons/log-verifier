@@ -1,7 +1,7 @@
 # GitHub Actions OIDC role for Opentrons/log-verifier desktop app deploys.
 #
 # Mirrors inf/release-ci/opentrons_monorepo_app_deploy_oidc.tf in robot-stack-infra,
-# scoped to prefix "logverifier/" instead of "app/".
+# scoped to prefix "logviewer/" instead of "app/".
 #
 # Buckets: robot-stack prod website (builds.opentrons.com) + ot3 prod website
 # (ot3-development.builds.opentrons.com).
@@ -37,11 +37,7 @@ locals {
     "repo:Opentrons@6139147/log-verifier@1332098088:*",
   ]
 
-  # Deploys write to logverifier/. logviewer/ stays allowed so this role can
-  # still read objects published before the prefix change.
   object_arns = [
-    "${data.aws_s3_bucket.builds.arn}/logverifier/*",
-    "${data.aws_s3_bucket.ot3_development_builds.arn}/logverifier/*",
     "${data.aws_s3_bucket.builds.arn}/logviewer/*",
     "${data.aws_s3_bucket.ot3_development_builds.arn}/logviewer/*",
   ]
@@ -50,7 +46,7 @@ locals {
 
 resource "aws_iam_role" "github_actions_log_verifier_deploy" {
   name        = "github-actions-log-verifier-deploy"
-  description = "OIDC: Opentrons/log-verifier S3 deploy to robot-stack + ot3 builds buckets (logverifier/ prefix)"
+  description = "OIDC: Opentrons/log-verifier S3 deploy to robot-stack + ot3 builds buckets (logviewer/ prefix)"
 
   lifecycle {
     create_before_destroy = true

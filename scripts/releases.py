@@ -20,9 +20,9 @@ from yarl import URL
 
 INSTALLERS = {"win": ".msi", "mac": ".dmg", "linux": ".AppImage"}
 STABLE_NAMES = {
-    "win": "logverifier.msi",
-    "mac": "logverifier.dmg",
-    "linux": "logverifier.AppImage",
+    "win": "Log Verifier.msi",
+    "mac": "Log Verifier.dmg",
+    "linux": "Log Verifier.AppImage",
 }
 PUBLIC = {"ACL": "public-read", "CacheControl": "max-age=60"}
 

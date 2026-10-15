@@ -1,15 +1,15 @@
 # Log Verifier release hosting
 
 GitHub Actions for Opentrons/log-verifier uploads signed installers to the existing
-builds website buckets, under `logverifier/` — the same pattern as the desktop app's `app/` prefix.
+builds website buckets, under `logviewer/` — the same pattern as the desktop app's `app/` prefix.
 
-| Channel  | URL                                                      |
-| -------- | -------------------------------------------------------- |
-| Release  | https://builds.opentrons.com/logverifier                 |
-| Internal | https://ot3-development.builds.opentrons.com/logverifier |
+| Channel  | URL                                                    |
+| -------- | ------------------------------------------------------ |
+| Release  | https://builds.opentrons.com/logviewer                 |
+| Internal | https://ot3-development.builds.opentrons.com/logviewer |
 
 This stack does **not** create those buckets. It creates an IAM role that GitHub
-Actions assumes via OIDC, with object access limited to the `logverifier/` prefix.
+Actions assumes via OIDC, with object access limited to the `logviewer/` prefix.
 
 ## Apply
 
