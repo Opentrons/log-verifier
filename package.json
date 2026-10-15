@@ -1,6 +1,6 @@
 {
   "name": "log-verifier",
-  "version": "1.0.1-alpha.0",
+  "version": "1.0.1-alpha.1",
   "private": true,
   "description": "Flex CRS Log Verifier",
   "license": "Apache-2",
