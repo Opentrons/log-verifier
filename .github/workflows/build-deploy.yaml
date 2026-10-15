@@ -95,7 +95,7 @@ jobs:
   deploy:
     name: "Deploy artifacts to S3 ${{ needs.configure.outputs.environment }}"
     needs: ["configure", "build"]
-    if: vars.OT_LOGVIEWER_DEPLOY_ROLE != ''
+    if: vars.OT_LOGVERIFIER_DEPLOY_ROLE != ''
     runs-on: "ubuntu-22.04"
     environment: ${{ needs.configure.outputs.environment }}
     permissions:
@@ -145,7 +145,7 @@ jobs:
       - name: "Configure AWS credentials (GitHub OIDC)"
         uses: "aws-actions/configure-aws-credentials@7474bc4690e29a8392af63c5b98e7449536d5c3a" # v4.3.1
         with:
-          role-to-assume: ${{ vars.OT_LOGVIEWER_DEPLOY_ROLE }}
+          role-to-assume: ${{ vars.OT_LOGVERIFIER_DEPLOY_ROLE }}
           aws-region: us-east-1
       - name: "Sync artifacts to S3"
         run: |
@@ -191,12 +191,12 @@ jobs:
             --version "${GITHUB_REF_NAME#v}" \
             --artifact-dir ./to_upload
       - name: "Invalidate CloudFront cache (builds.opentrons.com)"
-        if: steps.target.outputs.invalidate == 'true' && vars.OT_LOGVIEWER_BUILDS_CLOUDFRONT_DISTRIBUTION_ID != ''
+        if: steps.target.outputs.invalidate == 'true' && vars.OT_LOGVERIFIER_BUILDS_CLOUDFRONT_DISTRIBUTION_ID != ''
         run: |
           set -euo pipefail
           INVALIDATION_ID="$(
             aws cloudfront create-invalidation \
-              --distribution-id '${{ vars.OT_LOGVIEWER_BUILDS_CLOUDFRONT_DISTRIBUTION_ID }}' \
+              --distribution-id '${{ vars.OT_LOGVERIFIER_BUILDS_CLOUDFRONT_DISTRIBUTION_ID }}' \
               --paths '/${{ steps.target.outputs.prefix }}/*' \
               --output text \
               --query 'Invalidation.Id'

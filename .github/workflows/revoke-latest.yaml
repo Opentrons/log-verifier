@@ -17,7 +17,7 @@ jobs:
         uses: "./.github/actions/release-manifest"
         with:
           command: revoke
-          deploy-role: ${{ vars.OT_LOGVIEWER_DEPLOY_ROLE }}
+          deploy-role: ${{ vars.OT_LOGVERIFIER_DEPLOY_ROLE }}
           deploy-bucket: ${{ vars.DEPLOY_BUCKET }}
           deploy-prefix: ${{ vars.DEPLOY_PREFIX_BASE }}
-          distribution-id: ${{ vars.OT_LOGVIEWER_BUILDS_CLOUDFRONT_DISTRIBUTION_ID }}
+          distribution-id: ${{ vars.OT_LOGVERIFIER_BUILDS_CLOUDFRONT_DISTRIBUTION_ID }}

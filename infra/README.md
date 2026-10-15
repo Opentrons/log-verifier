@@ -18,17 +18,22 @@ Requires the same AWS profiles as `robot-stack-infra` (`terraform-state` and
 
 ```sh
 cd infra
-terraform init
+terraform init -migrate-state
 terraform apply
 # optional: pass the builds.opentrons.com CloudFront ID so the role can invalidate
 # terraform apply -var='builds_cloudfront_distribution_id=<id from release-ci>'
 ```
 
+The first `terraform init -migrate-state` copies the state object from
+`robotics/log-viewer` to `robotics/log-verifier`. Apply replaces the role
+`github-actions-log-viewer-deploy` with `github-actions-log-verifier-deploy`.
+Set `OT_LOGVERIFIER_DEPLOY_ROLE` to the new ARN before the next deploy.
+
 ## GitHub Actions variables
 
 After apply:
 
-1. Set `OT_LOGVIEWER_DEPLOY_ROLE` to `terraform output -raw log_viewer_github_oidc_role_arn`.
-2. Optionally set `OT_LOGVIEWER_BUILDS_CLOUDFRONT_DISTRIBUTION_ID` to the
+1. Set `OT_LOGVERIFIER_DEPLOY_ROLE` to `terraform output -raw log_verifier_github_oidc_role_arn`.
+2. Optionally set `OT_LOGVERIFIER_BUILDS_CLOUDFRONT_DISTRIBUTION_ID` to the
    `builds.opentrons.com` distribution ID (same value as
    `OT_APP_BUILDS_CLOUDFRONT_DISTRIBUTION_ID` in Opentrons/opentrons).

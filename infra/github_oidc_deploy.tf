@@ -6,8 +6,8 @@
 # Buckets: robot-stack prod website (builds.opentrons.com) + ot3 prod website
 # (ot3-development.builds.opentrons.com).
 #
-# After apply, set GitHub Actions variable OT_LOGVIEWER_DEPLOY_ROLE to
-# terraform output -raw log_viewer_github_oidc_role_arn.
+# After apply, set GitHub Actions variable OT_LOGVERIFIER_DEPLOY_ROLE to
+# terraform output -raw log_verifier_github_oidc_role_arn.
 #
 # Prerequisite: IAM OIDC provider for https://token.actions.githubusercontent.com
 # must exist in the robotics_robot_stack_prod account.
@@ -44,9 +44,13 @@ locals {
   cloudfront_arn = var.builds_cloudfront_distribution_id == "" ? null : "arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:distribution/${var.builds_cloudfront_distribution_id}"
 }
 
-resource "aws_iam_role" "github_actions_log_viewer_deploy" {
-  name        = "github-actions-log-viewer-deploy"
+resource "aws_iam_role" "github_actions_log_verifier_deploy" {
+  name        = "github-actions-log-verifier-deploy"
   description = "OIDC: Opentrons/log-verifier S3 deploy to robot-stack + ot3 builds buckets (logviewer/ prefix)"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -70,9 +74,9 @@ resource "aws_iam_role" "github_actions_log_viewer_deploy" {
   })
 }
 
-resource "aws_iam_role_policy" "github_actions_log_viewer_deploy_s3" {
-  name = "log-viewer-s3-logviewer-prefix"
-  role = aws_iam_role.github_actions_log_viewer_deploy.id
+resource "aws_iam_role_policy" "github_actions_log_verifier_deploy_s3" {
+  name = "log-verifier-s3-logverifier-prefix"
+  role = aws_iam_role.github_actions_log_verifier_deploy.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -91,7 +95,7 @@ resource "aws_iam_role_policy" "github_actions_log_viewer_deploy_s3" {
           ]
         },
         {
-          Sid    = "ObjectRWInLogviewerPrefix"
+          Sid    = "ObjectRWInReleasePrefix"
           Effect = "Allow"
           Action = [
             "s3:GetObject",
@@ -113,4 +117,14 @@ resource "aws_iam_role_policy" "github_actions_log_viewer_deploy_s3" {
       ],
     )
   })
+}
+
+moved {
+  from = aws_iam_role.github_actions_log_viewer_deploy
+  to   = aws_iam_role.github_actions_log_verifier_deploy
+}
+
+moved {
+  from = aws_iam_role_policy.github_actions_log_viewer_deploy_s3
+  to   = aws_iam_role_policy.github_actions_log_verifier_deploy_s3
 }
