@@ -118,13 +118,3 @@ resource "aws_iam_role_policy" "github_actions_log_verifier_deploy_s3" {
     )
   })
 }
-
-moved {
-  from = aws_iam_role.github_actions_log_viewer_deploy
-  to   = aws_iam_role.github_actions_log_verifier_deploy
-}
-
-moved {
-  from = aws_iam_role_policy.github_actions_log_viewer_deploy_s3
-  to   = aws_iam_role_policy.github_actions_log_verifier_deploy_s3
-}
