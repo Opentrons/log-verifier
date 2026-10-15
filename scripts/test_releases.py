@@ -150,7 +150,7 @@ def test_revoke_moves_active_to_previous_version():
     assert [
         (link["filename"], link["source_key"]) for link in magic_links(revoked)
     ] == [
-        ("Log Verifier.msi", "logviewer/old.msi"),
-        ("Log Verifier.dmg", "logviewer/old.dmg"),
-        ("Log Verifier.AppImage", "logviewer/old.AppImage"),
+        ("Log Viewer.msi", "logviewer/old.msi"),
+        ("Log Viewer.dmg", "logviewer/old.dmg"),
+        ("Log Viewer.AppImage", "logviewer/old.AppImage"),
     ]
