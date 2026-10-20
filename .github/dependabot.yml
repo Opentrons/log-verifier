@@ -1,0 +1,56 @@
+# Dependabot configuration
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+version: 2
+
+updates:
+  # pnpm lockfile at the repository root
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: "chore(deps):"
+    labels:
+      - dependencies
+    open-pull-requests-limit: 5
+    groups:
+      npm-minor:
+        update-types:
+          - minor
+          - patch
+    cooldown:
+      default-days: 7
+
+  # SHA-pinned GitHub Actions
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: wednesday
+    commit-message:
+      prefix: "chore(ci):"
+    labels:
+      - dependencies
+      - ci
+    open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    cooldown:
+      default-days: 7
+
+  # Terraform providers under infra/
+  - package-ecosystem: terraform
+    directory: /infra
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "chore(infra):"
+    labels:
+      - dependencies
+      - infrastructure
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
