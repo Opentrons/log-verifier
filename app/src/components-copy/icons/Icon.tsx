@@ -68,7 +68,7 @@ function IconComponent(props: IconProps): ReactNode {
       width,
       transform,
       //  filter undefined props
-    }).filter(([_, value]) => value != null),
+    }).filter(([, value]) => value != null),
   )
 
   return (
