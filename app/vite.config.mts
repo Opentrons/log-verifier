@@ -34,7 +34,7 @@ export default defineConfig(async (): Promise<UserConfig> => {
     plugins: [react({ include: "**/*.tsx*/" }), cssModuleSideEffect()],
     css: {
       postcss: {
-        plugins: [postCssImport({ root: "./src/" }), postCssPresetEnv({ stage: 0 })],
+        plugins: [postCssImport({ root: "./src/" }), postCssPresetEnv({ stage: 0 }) as any],
       },
     },
     resolve: {

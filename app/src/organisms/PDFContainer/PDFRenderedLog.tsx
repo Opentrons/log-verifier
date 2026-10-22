@@ -134,6 +134,10 @@ function LogLineRow({ line, dateFormatter }: LogLineRowProps): React.ReactNode {
 
 export function PDFRenderedLog({ data }: PDFRenderedLogProps): React.ReactNode {
   const { dateFormatter } = React.useContext(I18nContext)
+  // oxlint-disable-next-line react/purity this is in a usememo
+  const now = React.useMemo(() => new Date(), [])
+  const startDate = React.useMemo(() => new Date(data.period.startDate), [data])
+  const endDate = React.useMemo(() => new Date(data.period.endDate), [data])
   return (
     <div className={styles.pdf_container}>
       <div className={styles.title_container}>
@@ -144,7 +148,7 @@ export function PDFRenderedLog({ data }: PDFRenderedLogProps): React.ReactNode {
               : dateFormatter.format(new Date(data.period.endDate))
           }`}
         </h1>
-        <p className={styles.caption}>{`Exported ${dateFormatter.format(new Date())}`}</p>
+        <p className={styles.caption}>{`Exported ${dateFormatter.format(now)}`}</p>
       </div>
       <div className={styles.period_summary_container}>
         <SummaryRow
@@ -160,16 +164,13 @@ export function PDFRenderedLog({ data }: PDFRenderedLogProps): React.ReactNode {
         />
         <SummaryRow label="Robot name" content={data.period.robotId.name} />
         <SummaryRow label="Robot serial" content={data.period.robotId.serial} />
-        <SummaryRow
-          label="Start date"
-          content={dateFormatter.format(new Date(data.period.startDate))}
-        />
+        <SummaryRow label="Start date" content={dateFormatter.format(new Date(startDate))} />
         <SummaryRow
           label="End date"
           content={
             data.period.endDate == null
               ? "Current at time of export"
-              : dateFormatter.format(new Date(data.period.endDate))
+              : dateFormatter.format(new Date(endDate))
           }
         />
         <SummaryRow
