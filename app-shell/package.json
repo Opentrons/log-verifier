@@ -18,7 +18,7 @@
     "fs-extra": "11.4.1",
     "lodash": "4.18.1",
     "merge-options": "3.0.4",
-    "sanitize-filename": "1.6.4",
+    "sanitize-filename": "1.6.5",
     "unzipper": "0.12.5",
     "uuid": "14.0.3",
     "winston": "3.19.0",
@@ -33,7 +33,7 @@
     "conf": "16.0.0",
     "electron": "44.9.0",
     "electron-builder": "26.18.0",
-    "vite": "8.3.5",
+    "vite": "8.3.8",
     "winston-transport": "4.9.0"
   },
   "build": {
